@@ -24,11 +24,15 @@ class Calculator {
 
 	appendNumber(number){
 		//adds a number to the screen whenever user presses the number
-		this.currentOperand = number;
+		if (number === '.' && this.currentOperand.includes('.')) return
+		this.currentOperand = this.currentOperand.toString() + number.toString();
 	};
 
-	cooseOperation(operation) {
+	chooseOperation(operation) {
 		//every time user clicks operation buttons on the calculator
+		this.operation = operation,
+		this.previousOperand = this.currentOperand,
+		this.currentOperand = ''
 	};
 
 	compute(){
@@ -39,6 +43,7 @@ class Calculator {
 	updateDisplay(){
 		//updates the our values innside of our output
 		this.currentOperandTextElement.innerText = this.currentOperand;
+		this.previousOperandTextElement.innerText = this.previousOperand;
 	}
 };
 
@@ -59,6 +64,13 @@ const calculator = new Calculator(previousOperandTextElement, currentOperandText
 numberButtons.forEach(button => {
 	button.addEventListener('click', () => {
 		calculator.appendNumber(button.innerText);
+		calculator.updateDisplay();
+	});
+});
+
+operationButtons.forEach(button => {
+	button.addEventListener('click', () => {
+		calculator.chooseOperation(button.innerText);
 		calculator.updateDisplay();
 	});
 });
